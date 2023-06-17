@@ -42,6 +42,7 @@ class Items(Resource):
         db.session.commit()
         return Task.query.all()
 
+
 class Item(Resource):
     @marshal_with(taskFields)
     def get(self, pk):
