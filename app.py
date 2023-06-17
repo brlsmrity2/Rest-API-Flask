@@ -42,12 +42,26 @@ class Items(Resource):
         db.session.commit()
         return Task.query.all()
 
-
 class Item(Resource):
     @marshal_with(taskFields)
     def get(self, pk):
         task = Task.query.filter_by(id=pk).first()
         return task  
+
+    @marshal_with(taskFields)
+    def put(self, pk):
+        data = request.json
+        task = Task.query.filter_by(id=pk).first()
+        task.name = data['name']
+        db.session.commit()
+        return task
+    
+    @marshal_with(taskFields)
+    def delete(self, pk):
+        task = Task.query.filter_by(id=pk).first()
+        db.session.delete(task)
+        db.session.commit()
+        return task
 
 api.add_resource(Items, '/')
 api.add_resource(Item, '/<int:pk>')
